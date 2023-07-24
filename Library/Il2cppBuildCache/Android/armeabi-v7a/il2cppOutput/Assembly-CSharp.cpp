@@ -27022,15 +27022,15 @@ IL_00d9:
 IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void SoundManagerScript_PlayFx_mE22734CEBB1F4D17FACEAC9A172200DED9D3D523 (SoundManagerScript_t79A55BC6DFB66FB70B76CE44E39A934FC2AF20C6 * __this, AudioClip_t16D2E573E7CC1C5118D8EE0F0692D46866A1C0EE * ___clip0, float ___volume1, const RuntimeMethod* method)
 {
 	{
-		// if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume);
+		// if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume * _volumeMusic);
 		bool L_0 = __this->get__toggleMusic_19();
 		if (!L_0)
 		{
-			goto IL_001e;
+			goto IL_0025;
 		}
 	}
 	{
-		// if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume);
+		// if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume * _volumeMusic);
 		AudioClip_t16D2E573E7CC1C5118D8EE0F0692D46866A1C0EE * L_1 = ___clip0;
 		Camera_tC44E094BAB53AFC8A014C6F9CFCE11F4FC38006C * L_2;
 		L_2 = Camera_get_main_mC337C621B91591CEF89504C97EF64D717C12871C(/*hidden argument*/NULL);
@@ -27041,10 +27041,11 @@ IL2CPP_EXTERN_C IL2CPP_METHOD_ATTR void SoundManagerScript_PlayFx_mE22734CEBB1F4
 		Vector3_t65B972D6A585A0A5B63153CF1177A90D3C90D65E  L_4;
 		L_4 = Transform_get_position_m40A8A9895568D56FFC687B57F30E8D53CB5EA341(L_3, /*hidden argument*/NULL);
 		float L_5 = ___volume1;
-		AudioSource_PlayClipAtPoint_m1DB4B29B9FBCF0832AB7855AD2B2B319322B61FC(L_1, L_4, L_5, /*hidden argument*/NULL);
+		float L_6 = __this->get__volumeMusic_20();
+		AudioSource_PlayClipAtPoint_m1DB4B29B9FBCF0832AB7855AD2B2B319322B61FC(L_1, L_4, ((float)il2cpp_codegen_multiply((float)L_5, (float)L_6)), /*hidden argument*/NULL);
 	}
 
-IL_001e:
+IL_0025:
 	{
 		// }
 		return;

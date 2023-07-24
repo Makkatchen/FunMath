@@ -31,10 +31,8 @@ ScriptsOnlyBuild:
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -82,41 +80,41 @@ ScriptsOnlyBuild:
     - Class: 104
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1476}
+      Script: {instanceID: 1482}
     - Class: 114
-      Script: {instanceID: 1544}
+      Script: {instanceID: 1550}
     - Class: 114
-      Script: {instanceID: 1720}
+      Script: {instanceID: 1726}
     - Class: 114
-      Script: {instanceID: 1748}
+      Script: {instanceID: 1754}
     - Class: 114
-      Script: {instanceID: 1762}
-    - Class: 114
-      Script: {instanceID: 2210}
+      Script: {instanceID: 1768}
     - Class: 114
       Script: {instanceID: 2216}
     - Class: 114
-      Script: {instanceID: 2762}
+      Script: {instanceID: 2222}
     - Class: 114
-      Script: {instanceID: 2946}
+      Script: {instanceID: 2254}
     - Class: 114
-      Script: {instanceID: 3166}
+      Script: {instanceID: 2770}
     - Class: 114
-      Script: {instanceID: 3194}
+      Script: {instanceID: 2954}
     - Class: 114
-      Script: {instanceID: 3254}
+      Script: {instanceID: 3172}
     - Class: 114
-      Script: {instanceID: 3450}
+      Script: {instanceID: 3200}
     - Class: 114
-      Script: {instanceID: 3570}
+      Script: {instanceID: 3260}
     - Class: 114
-      Script: {instanceID: 4002}
+      Script: {instanceID: 3456}
     - Class: 114
-      Script: {instanceID: 5460}
+      Script: {instanceID: 3576}
     - Class: 114
-      Script: {instanceID: 5844}
+      Script: {instanceID: 4008}
     - Class: 114
-      Script: {instanceID: 57730}
+      Script: {instanceID: 5466}
+    - Class: 114
+      Script: {instanceID: 5850}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -276,6 +274,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: GroupTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 8952a70b43cf7fc00e0184a50816157c
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: SoundManagerScript
   - hash:
       serializedVersion: 2
       Hash: b10f0f008d787b95a5928eed8ceaa36e
@@ -810,13 +814,7 @@ ScriptsOnlyBuild:
     assemblyName: Unity.2D.IK.Runtime.dll
     namespaceName: UnityEngine.U2D.IK
     className: FabrikSolver2D
-  - hash:
-      serializedVersion: 2
-      Hash: 8952a70b43cf7fc00e0184a50816157c
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: SoundManagerScript
   platform: 13
   scenePathNames:
   - Assets/Scenes/GameScene.unity
-  playerPath: H:/MeGame/Builds/FunMath/vers_1.apk
+  playerPath: H:/MeGame/Builds/FunMath/FunMath_ver2.apk

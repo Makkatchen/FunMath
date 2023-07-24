@@ -106,7 +106,7 @@ public class SoundManagerScript : MonoBehaviour
 
     private void PlayFx(AudioClip clip, float volume)
     {
-        if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume);
+        if (_toggleMusic) AudioSource.PlayClipAtPoint(clip, Camera.main.transform.position, volume * _volumeMusic);
     }
 
     public void PressButtonUISound()
