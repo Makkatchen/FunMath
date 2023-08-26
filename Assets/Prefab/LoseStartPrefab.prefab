@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1375147961190378168}
   - component: {fileID: 1375147961190378170}
   - component: {fileID: 1375147961190378171}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: LoseStartPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

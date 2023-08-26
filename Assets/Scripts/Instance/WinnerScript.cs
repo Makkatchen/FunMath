@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,7 +25,7 @@ public class WinnerScript : MonoBehaviour
     [SerializeField] private Slider _progressSlider;
 
     [Header("Объекты награды")]
-    [SerializeField] private Image _medalImage;
+    [SerializeField] private GameObject _medalImage;
     [SerializeField] private Sprite _goldMedalSprite;
     [SerializeField] private Sprite _silverMedalSprite;
     [SerializeField] private Sprite _bronzeMedalSprite;
@@ -34,7 +33,6 @@ public class WinnerScript : MonoBehaviour
     [Header("Эффекты для начисления очков и левела")]
     [SerializeField] private GameObject _addLevelEffect;
     [SerializeField] private GameObject _shineMedalEffect;
-
 
     [Header("Аниматор")]
     [SerializeField] private Animator _animator;
@@ -48,9 +46,6 @@ public class WinnerScript : MonoBehaviour
     private int _scoreUser;
 
     private int _scoreReceived;
-
-    private bool _isAddLevel;
-
 
     private void Awake()
     {
@@ -69,14 +64,12 @@ public class WinnerScript : MonoBehaviour
     {
         _shineMedalEffect.SetActive(false);
         _addLevelEffect.SetActive(false);
-        _medalImage.enabled = false;
+        _medalImage.SetActive(false);
 
         if (NavigationGame.instance.GetCountPlayers() == 1)
         {
             _twoPlayersPanel.SetActive(false);
             _onePlayersPanel.SetActive(true);
-            //PlayerPrefs.SetInt("Level", 1);
-            //PlayerPrefs.SetInt("Score", 0);
             _levelUser = PlayerPrefs.GetInt("Level", 1);
             _scoreUser = PlayerPrefs.GetInt("Score", 0);
             _scoreValueLabel.text = _scoreUser.ToString();
@@ -92,23 +85,28 @@ public class WinnerScript : MonoBehaviour
             _scoreForOnePlayerText.text = scoreOnePlayer.ToString();
             _scoreForTwoPlayerText.text = scoreTwoPlayer.ToString();
 
-            _namePlayerText.text = (scoreOnePlayer > scoreTwoPlayer) ? "первый игрок!" : (scoreOnePlayer < scoreTwoPlayer) ? "выторой игрок!" : "ВСЕ!!!";
-            _labelWinText.text = (scoreOnePlayer == scoreTwoPlayer) ? "Победили:" : "Победил:";
+            string lang = PlayerPrefs.GetString("Lang", "En");
+
+            string firstPlayer = (lang == "En")? "first player!" : "первый игрок!";
+            string secondPlayer = (lang == "En") ? "second player!" : "второй игрок!";
+            string allPlayer = (lang == "En") ? "Everyone!!!" : "Все!!!";
+            string winLabel = (lang == "En") ? "Won:" : (scoreOnePlayer == scoreTwoPlayer) ? "Выйграли: " : "Выйграл: ";
+
+            _namePlayerText.text = (scoreOnePlayer > scoreTwoPlayer) ? firstPlayer : (scoreOnePlayer < scoreTwoPlayer) ? secondPlayer : allPlayer;
+            _labelWinText.text = winLabel;
         }
 
-        _animator.Play("OpenWinPanel");
-    }
 
-    public void EndOpenAnimationForPlayerOne()
-    {
+        _animator.Play("OpenWinPanel");
+
         if (NavigationGame.instance.GetCountPlayers() == 1)
             StartWinScript(_scoreReceived);
     }
 
-    public void StartWinScript(int scoreOnePlayer)
+    private void StartWinScript(int scoreOnePlayer)
     {
 
-        _medalImage.sprite = (scoreOnePlayer == 5) ? _goldMedalSprite : (scoreOnePlayer > 3) ? _silverMedalSprite : _bronzeMedalSprite;
+        _medalImage.GetComponent<Image>().sprite = (scoreOnePlayer == 5) ? _goldMedalSprite : (scoreOnePlayer > 3) ? _silverMedalSprite : _bronzeMedalSprite;
         int mode = (NavigationGame.instance.GetDifficultLevel() == 0) ? 5 : (NavigationGame.instance.GetDifficultLevel() == 1)? 10 : 15;
         int addScore = scoreOnePlayer * mode;
 
@@ -129,21 +127,13 @@ public class WinnerScript : MonoBehaviour
 
     private IEnumerator AddScore(int score, int countScoreForAddLevel, bool isNewLevel)
     {
-
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(1.25f);
         int stepForAddScore = 1;
         float timeDurationForAddScore = 0.05f;
         int showScore = _scoreUser;
         int remainder = (isNewLevel) ? (score + _scoreUser) - countScoreForAddLevel : 0;
        
         score -= remainder;
-
-        if (!_isAddLevel)
-        {
-            SoundManagerScript.instance.PlaySoundEffects("addMedal");
-            _medalImage.enabled = true;
-            _animator.Play("AddMedal");
-        }
 
         while (score > 0)
         {
@@ -169,6 +159,15 @@ public class WinnerScript : MonoBehaviour
         {
             StartCoroutine(AddLevel(remainder));
         }
+        else
+        {
+            SoundManagerScript.instance.PlaySoundEffects("addMedal");
+            _medalImage.SetActive(true);
+            _animator.Play("AddMedal");
+            yield return new WaitForSeconds(1f);
+            ShineMedal();
+        }
+
     }
 
     private IEnumerator AddLevel(int addScore)
@@ -180,8 +179,6 @@ public class WinnerScript : MonoBehaviour
         _progressSlider.value = (float)_scoreUser / _needScoreForLevel;
         _levelValueLabel.text = _levelUser.ToString();
         _addLevelEffect.SetActive(true);
-        _isAddLevel = true;
-
         yield return new WaitForSeconds(0.5f);
 
         StartCoroutine(AddScore(addScore, _needScoreForLevel, false));

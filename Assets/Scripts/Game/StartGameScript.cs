@@ -12,12 +12,14 @@ public class StartGameScript : MonoBehaviour
     [SerializeField] private Text _twoNumberText;
     [SerializeField] private Text _operatorText;
 
-    [Header("Поле ввода ответа")]
-    [SerializeField] private InputField _answerInput;
+    [Header("Текст отображения ответа")]
+    [SerializeField] private Text _answerText;
 
     [Header("Объекты прогресса игроков")]
     [SerializeField] private GameObject _playerOneProgressPanel;
     [SerializeField] private GameObject _playerTwoProgressPanel;
+    [SerializeField] private GameObject _faderForPlayerOneProgressPanel;
+    [SerializeField] private GameObject _faderForplayerTwoProgressPanel;
 
     [Header("Спрайты звезд для прогресса")]
     [SerializeField] private Sprite _winStar;
@@ -36,6 +38,17 @@ public class StartGameScript : MonoBehaviour
     [SerializeField] private GameObject _selectPlayerPanel;
     [SerializeField] private Text _selectPlayerLabel;
 
+    [Header("Vertical Layout Group для прогресса игроков")]
+    [SerializeField] private VerticalLayoutGroup _verticalLayoutGroupForProgress;
+
+    [Header("Lock Image for game")]
+    [SerializeField] GameObject _lockImage;
+    [SerializeField] GameObject _lockImageForRewardButton;
+
+    [Header("Reward button")]
+    [SerializeField] Button _rewardButton;
+
+
     /*Анимации и твины*/
 
     private Tween _explusionStarTween;
@@ -43,8 +56,6 @@ public class StartGameScript : MonoBehaviour
     private Tween _showNumberPlayer;
 
     /*Переменные для скрипта*/
-    private int[] _numbersLowDifficulty = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-    private int[] _numbersNormalDifficulty = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     private char[] _operators = new char[] { '+', '-' };
 
     private int _countExemple;
@@ -60,6 +71,10 @@ public class StartGameScript : MonoBehaviour
 
     public void StartGame(int countPlayer, int difficulty)
     {
+        _rewardButton.interactable = false;
+        _faderForPlayerOneProgressPanel.SetActive(false);
+        _faderForplayerTwoProgressPanel.SetActive(false);
+
         _gameIsFinish = false;
 
         SelectBGForGame.instance.SelectBg();
@@ -83,7 +98,7 @@ public class StartGameScript : MonoBehaviour
         }
         else
         {
-            _answerInput.text = "???";
+            _answerText.text = "???";
             _operatorText.text = _operators[Random.Range(0, _operators.Length)].ToString();
             int oneNumber = 0;
             int twoNumber = 0;
@@ -119,6 +134,8 @@ public class StartGameScript : MonoBehaviour
 
             _oneNumberText.text = oneNumber.ToString();
             _twoNumberText.text = twoNumber.ToString();
+
+            TimerForRewardButtonScript.instance.StartTimer();
         }
 
     }
@@ -148,7 +165,7 @@ public class StartGameScript : MonoBehaviour
             if (_countExemple % 2 != 0) _numberActivPlayer = 1;
             else _numberActivPlayer = 2;
 
-           if(_countExemple <= _countRounds) ShowBoardWithNumberPlayer();
+            if (_countExemple <= _countRounds) ShowBoardWithNumberPlayer();
         }
         else
         {
@@ -158,51 +175,66 @@ public class StartGameScript : MonoBehaviour
 
     private void CreateBoardForCountPlayers(int countPlayers)
     {
-        _playerOneProgressPanel.SetActive(true);
+        string lang = PlayerPrefs.GetString("Lang", "En");
 
+        _playerOneProgressPanel.SetActive(true);
         if (countPlayers == 1)
         {
-            _namePlayerOne.text = "Ваш успех!";
-            _playerTwoProgressPanel.SetActive(false);
+            _namePlayerOne.text = (lang == "En") ? "Your progress!" : "Ваш успех!";
+            _playerTwoProgressPanel.transform.parent.gameObject.SetActive(false);
+
+            _verticalLayoutGroupForProgress.childControlHeight = false;
+            _playerOneProgressPanel.transform.parent.gameObject.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 200);
+                
 
         }
         else if (countPlayers == 2)
         {
-            _namePlayerOne.text = "Первый игрок!";
-            _namePlayerTwo.text = "Второй игрок!";
+            _namePlayerOne.text = (lang == "En") ? "First Player!" : "Первый игрок!";
+            _namePlayerTwo.text = (lang == "En") ? "Second Player!" : "Второй игрок!";
             _playerTwoProgressPanel.SetActive(true);
         }
     }
 
     private void ShowBoardWithNumberPlayer()
     {
+        string lang = PlayerPrefs.GetString("Lang", "En");
+        string nameActivPlayer = (lang == "En") ? "Player Turn " : "Ход игрока ";
+        _lockImage.SetActive(true);
         float startPositionY = _selectPlayerPanel.transform.position.y;
-        _selectPlayerLabel.text = (_numberActivPlayer == 1) ? "Ход игрока №1" : "Ход игрока №2";
-        _showNumberPlayer = _selectPlayerPanel.transform.DOMoveY(0, 1.2f).SetDelay(1f).OnComplete(() => ReturnBoardToPlace(startPositionY));
+        _selectPlayerLabel.text = (_numberActivPlayer == 1) ? nameActivPlayer + "#1" : nameActivPlayer + "#2";
+        _showNumberPlayer = _selectPlayerPanel.transform.DOMoveY(0, 0.8f).SetDelay(0.8f).OnComplete(() => ReturnBoardToPlace(startPositionY));
     }
 
     private void ReturnBoardToPlace(float y)
     {
+        bool setFadeForPanel = (_numberActivPlayer == 1) ? true : false;
+        _faderForPlayerOneProgressPanel.SetActive(!setFadeForPanel);
+        _faderForplayerTwoProgressPanel.SetActive(setFadeForPanel);
         _showNumberPlayer.Kill();
-
-        _showNumberPlayer = _selectPlayerPanel.transform.DOMoveY(y, 0.5f).SetDelay(0.8f).OnComplete(() => _showNumberPlayer.Kill());
-
+        _showNumberPlayer = _selectPlayerPanel.transform.DOMoveY(y, 0.3f).SetDelay(0.8f).OnComplete(() => CompleteShowBoard());
     }
 
+    private void CompleteShowBoard()
+    {
+        _showNumberPlayer.Kill();
+        _lockImage.SetActive(false);
+    }
 
-
-    public void SubmitAnswerEndEditInputField()
+    public void SubmitPressButton()
     {
         if (!_gameIsFinish)
         {
             if (InsertAnswerIsCorrecly())
             {
-                int answer = int.Parse(_answerInput.text);
+                int answer = int.Parse(_answerText.text);
                 int checkAnswer = GetSolution();
 
                 CheckAnswer(checkAnswer, answer);
 
                 CreateExemple(NavigationGame.instance.GetDifficultLevel());
+
+                ShowRewardButton(false);
             }
             else
             {
@@ -212,14 +244,9 @@ public class StartGameScript : MonoBehaviour
         }
     }
 
-    public void SubmitPressButton()
-    {
-
-    }
-
     private bool InsertAnswerIsCorrecly()
     {
-        return (_answerInput.text != "" && _answerInput.text != "???");
+        return (_answerText.text != "" && _answerText.text != "???");
     }
 
 
@@ -242,7 +269,7 @@ public class StartGameScript : MonoBehaviour
     {
         Image[] stars = playerPanel.transform.Find("HorizontalGroupForStars").gameObject.GetComponentsInChildren<Image>();
 
-        int numberStar = ((NavigationGame.instance.GetCountPlayers() == 2) && _numberActivPlayer == 2) ? _countExemple / 2 -1 :
+        int numberStar = ((NavigationGame.instance.GetCountPlayers() == 2) && _numberActivPlayer == 2) ? _countExemple / 2 - 1 :
             (NavigationGame.instance.GetCountPlayers() == 2)?_countExemple - (_countExemple / 2) - 1 : _countExemple-1;
 
         if (isCorrectly)
@@ -263,9 +290,7 @@ public class StartGameScript : MonoBehaviour
 
     private void CompleteAnimationForExplusionStart(Transform star)
     {
-
         Instantiate(_winStarEffectPrefab, star);
-        //SoundManagerScript.instance.PlaySoundEffects("explosionStar");
         _explusionStarTween.Kill();
         _explusionStarTween = star.DOScale(Vector3.one, 0.5f);
     }
@@ -285,12 +310,54 @@ public class StartGameScript : MonoBehaviour
 
     private IEnumerator FinishGame()
     {
-        yield return new WaitForSeconds(1.5f);
-
+        yield return new WaitForSeconds(0.5f);
         SoundManagerScript.instance.PlaySoundEffects("winGame");
         NavigationGame.instance.OpenWinPanel(_scoreOnePlayer, _scoreTwoPlayer);
     }
 
+
+    public void OnClickNumberButton(int number)
+    {
+        SoundManagerScript.instance.PressButtonUISound();
+        if(_answerText.text.Length < 4)
+            _answerText.text = (_answerText.text == "???") ? number.ToString() : _answerText.text + number.ToString();
+    }
+
+    public void OnClickClearButton()
+    {
+        SoundManagerScript.instance.PressButtonUISound();
+        _answerText.text = "???";
+    }
+
+    public void ShowAnswerForReward()
+    {
+        _answerText.text = GetSolution().ToString();
+        ShowRewardButton(false);
+    }
+
+    public void ShowRewardButton(bool isShow)
+    {
+        if (isShow)
+        {
+            _rewardButton.interactable = isShow;
+            _lockImageForRewardButton.SetActive(isShow);
+            Image fade = _lockImageForRewardButton.GetComponent<Image>();
+            fade.color = new Color(0, 0.7607f, 0.8313f, 1);
+            fade.DOFade(0, 0.8f).OnComplete(() =>
+            {
+                _lockImageForRewardButton.SetActive(!isShow);
+            }
+            );
+        }
+        else
+        {
+            Image fade = _lockImageForRewardButton.GetComponent<Image>();
+            fade.color = new Color(0, 0.7607f, 0.8313f, 1);
+            _lockImageForRewardButton.SetActive(!isShow);
+            _rewardButton.interactable = isShow;
+        }
+
+    }
 
 
 }

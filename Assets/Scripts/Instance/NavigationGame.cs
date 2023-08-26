@@ -1,7 +1,9 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
 using UnityEngine.UI;
+using Lean.Localization;
 
 public class NavigationGame : MonoBehaviour
 {
@@ -24,6 +26,9 @@ public class NavigationGame : MonoBehaviour
 
     [Header("Скрипты")]
     [SerializeField] private StartGameScript _startGameScript;
+
+    [Header("Реклама")]
+    [SerializeField] private AdMobInitMobileAds _adMob;
 
     private Tween _fadeScreenTween;
 
@@ -50,6 +55,10 @@ public class NavigationGame : MonoBehaviour
 
     private void Start()
     {
+        PlayerPrefs.SetString("Lang", "En");
+        LeanLocalization.SetCurrentLanguageAll("English");
+        
+
         _faderImage.enabled = true;
         _faderImage.color = new Color(0, 0, 0, 1);
 
@@ -126,11 +135,11 @@ public class NavigationGame : MonoBehaviour
         {
             if (PlayerPrefs.GetInt("Restart", 0) == 1)
             {
-                PlayerPrefs.SetInt("Restart", 0);
                 _countPlayerInGame = PlayerPrefs.GetInt("CountPlayer");
                 _difficultyInGame = PlayerPrefs.GetInt("Difficulty");
                 _inGame = true;
                 _startGameTrigger = false;
+                PlayerPrefs.SetInt("Restart", 0);
                 OpenGamePanel();
             }
 
@@ -206,12 +215,30 @@ public class NavigationGame : MonoBehaviour
     public void RestartGame()
     {
         SoundManagerScript.instance.PressButtonUISound();
+        _adMob.ShowInterstitial();
+        StartCoroutine(Restart());
+    }
+
+    private IEnumerator Restart()
+    {
+        //yield return null;
+        yield return new WaitForSeconds(0.1f);
         _inGame = false;
         PlayerPrefs.SetInt("Restart", 1);
         PlayerPrefs.SetInt("CountPlayer", _countPlayerInGame);
         PlayerPrefs.SetInt("Difficulty", _difficultyInGame);
-
         DOTween.KillAll();
         SceneManager.LoadScene(0);
+    }
+
+
+    public void ShowAnswerForReward()
+    {
+        _startGameScript.ShowAnswerForReward();
+    }
+
+    public void ShowRewardButton(bool isShow)
+    {
+        _startGameScript.ShowRewardButton(isShow);
     }
 }
