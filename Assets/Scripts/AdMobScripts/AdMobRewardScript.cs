@@ -78,8 +78,8 @@ public class AdMobRewardScript : MonoBehaviour
 
     private void OnDisable()
     {
-        _rewardedAd.OnAdLoaded -= LoadAdRewarded;
-        _rewardedAd.OnAdFailedToLoad -= FailLoadAdRewarded;
-        _rewardedAd.OnUserEarnedReward -= AdRewardedIsComplete;
+        //_rewardedAd.OnAdLoaded -= LoadAdRewarded;
+        //_rewardedAd.OnAdFailedToLoad -= FailLoadAdRewarded;
+        //_rewardedAd.OnUserEarnedReward -= AdRewardedIsComplete;
     }
 }

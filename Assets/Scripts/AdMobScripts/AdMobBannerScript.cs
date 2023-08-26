@@ -58,6 +58,6 @@ public class AdMobBannerScript : MonoBehaviour
 
     private void OnDisable()
     {
-        _bannerView.OnAdLoaded -= LoadAdBanner;
+       // _bannerView.OnAdLoaded -= LoadAdBanner;
     }
 }

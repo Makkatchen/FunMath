@@ -66,7 +66,7 @@ public class AdMobInterstitialScript : MonoBehaviour
 
     private void OnDisable()
     {
-        _interstitialAd.OnAdLoaded -= LoadAdInterstitial;
-        _interstitialAd.OnAdFailedToLoad -= FailLoadAdInterstitial;
+        //_interstitialAd.OnAdLoaded -= LoadAdInterstitial;
+        //_interstitialAd.OnAdFailedToLoad -= FailLoadAdInterstitial;
     }
 }

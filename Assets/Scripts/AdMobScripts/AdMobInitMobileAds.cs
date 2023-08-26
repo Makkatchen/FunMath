@@ -11,9 +11,9 @@ public class AdMobInitMobileAds : MonoBehaviour
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus =>
         {
-            _bannerScript.CreateBannerView();
-            _interstitialScript.LoadInterstitialAd();
-            _rewardedScript.LoadRewardedAd();
+            //_bannerScript.CreateBannerView();
+            //_interstitialScript.LoadInterstitialAd();
+            //_rewardedScript.LoadRewardedAd();
         }
         );
     }
