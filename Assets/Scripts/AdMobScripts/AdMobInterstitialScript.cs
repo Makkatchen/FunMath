@@ -1,11 +1,13 @@
 using System;
 using UnityEngine;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 
 
 public class AdMobInterstitialScript : MonoBehaviour
 {
-    private const string _adUnitIdInterstitia = "ca-app-pub-2462155519154813/7838601841"; //-work //"ca-app-pub-3940256099942544/1033173712" - test;
+    /*
+    private const string _adUnitIdInterstitia = "ca-app-pub-3940256099942544/1033173712";
+        //"ca-app-pub-2462155519154813/7838601841"; //-work //"ca-app-pub-3940256099942544/1033173712" - test;
 
     private InterstitialAd _interstitialAd;
 
@@ -66,7 +68,8 @@ public class AdMobInterstitialScript : MonoBehaviour
 
     private void OnDisable()
     {
-        //_interstitialAd.OnAdLoaded -= LoadAdInterstitial;
-        //_interstitialAd.OnAdFailedToLoad -= FailLoadAdInterstitial;
+        _interstitialAd.OnAdLoaded -= LoadAdInterstitial;
+        _interstitialAd.OnAdFailedToLoad -= FailLoadAdInterstitial;
     }
+    */
 }

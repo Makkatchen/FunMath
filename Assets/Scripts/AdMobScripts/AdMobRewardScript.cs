@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 
 public class AdMobRewardScript : MonoBehaviour
 {
-    private string _adUnitIdRewarder = "ca-app-pub-2462155519154813/9525705147"; //-work "ca-app-pub-3940256099942544/5224354917"; - test
+    /*
+    private string _adUnitIdRewarder = "ca-app-pub-3940256099942544/5224354917";
+    //"ca-app-pub-2462155519154813/9525705147"; //-work "ca-app-pub-3940256099942544/5224354917"; - test
 
     public bool _isLoadRewarded;
 
@@ -78,8 +80,9 @@ public class AdMobRewardScript : MonoBehaviour
 
     private void OnDisable()
     {
-        //_rewardedAd.OnAdLoaded -= LoadAdRewarded;
-        //_rewardedAd.OnAdFailedToLoad -= FailLoadAdRewarded;
-        //_rewardedAd.OnUserEarnedReward -= AdRewardedIsComplete;
+        _rewardedAd.OnAdLoaded -= LoadAdRewarded;
+        _rewardedAd.OnAdFailedToLoad -= FailLoadAdRewarded;
+        _rewardedAd.OnUserEarnedReward -= AdRewardedIsComplete;
     }
+    */
 }

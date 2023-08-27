@@ -27,8 +27,8 @@ public class NavigationGame : MonoBehaviour
     [Header("Скрипты")]
     [SerializeField] private StartGameScript _startGameScript;
 
-    [Header("Реклама")]
-    [SerializeField] private AdMobInitMobileAds _adMob;
+    //[Header("Реклама")]
+    //[SerializeField] private AdMobInitMobileAds _adMob;
 
     private Tween _fadeScreenTween;
 
@@ -215,7 +215,7 @@ public class NavigationGame : MonoBehaviour
     public void RestartGame()
     {
         SoundManagerScript.instance.PressButtonUISound();
-        _adMob.ShowInterstitial();
+        //_adMob.ShowInterstitial();
         StartCoroutine(Restart());
     }
 

@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 
 public class AdMobBannerScript : MonoBehaviour
 {
-    private string _adUnitId = "ca-app-pub-2462155519154813/9387471323";// - work //"ca-app-pub-3940256099942544/6300978111"; - test
+    /*
+    private string _adUnitId = "ca-app-pub-3940256099942544/6300978111";
+    //"ca-app-pub-2462155519154813/9387471323";// - work //"ca-app-pub-3940256099942544/6300978111"; - test
 
     private BannerView _bannerView;
 
@@ -58,6 +60,7 @@ public class AdMobBannerScript : MonoBehaviour
 
     private void OnDisable()
     {
-       // _bannerView.OnAdLoaded -= LoadAdBanner;
+        _bannerView.OnAdLoaded -= LoadAdBanner;
     }
+    */
 }

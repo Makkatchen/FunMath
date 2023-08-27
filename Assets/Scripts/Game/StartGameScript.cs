@@ -56,7 +56,7 @@ public class StartGameScript : MonoBehaviour
     private Tween _showNumberPlayer;
 
     /*Переменные для скрипта*/
-    private char[] _operators = new char[] { '+', '-' };
+    private char[] _operators = new char[] { '+', '-', 'x', '/'};
 
     private int _countExemple;
     private int _countRounds;
@@ -99,24 +99,37 @@ public class StartGameScript : MonoBehaviour
         else
         {
             _answerText.text = "???";
-            _operatorText.text = _operators[Random.Range(0, _operators.Length)].ToString();
+            _operatorText.text = (difficulty == 0) ? _operators[Random.Range(0, _operators.Length-2)].ToString() :
+                (difficulty == 1) ? _operators[Random.Range(0, _operators.Length - 1)].ToString() : _operators[Random.Range(2, _operators.Length)].ToString();
             int oneNumber = 0;
             int twoNumber = 0;
 
             if (difficulty == 0)
             {
-                oneNumber = Random.Range(1, 10);
+                oneNumber = Random.Range(10, 20);
                 twoNumber = Random.Range(1, 10);
+
             }
             else if (difficulty == 1)
             {
-                oneNumber = Random.Range(10, 20);
-                twoNumber = Random.Range(1, 10);
+                int startNumberSize = (_operatorText.text == "x") ? 1 : 10;
+                int finishNumberSize = (_operatorText.text == "x") ? 10 : 20;
+
+                oneNumber = Random.Range(startNumberSize, finishNumberSize);
+
+                twoNumber = Random.Range(startNumberSize, finishNumberSize);
+
             }
             else if (difficulty == 2)
             {
-                oneNumber = Random.Range(10, 20);
-                twoNumber = Random.Range(5, 20);
+                oneNumber = Random.Range(1, 10);
+                twoNumber = Random.Range(1, 10);
+
+                if (_operatorText.text == "/")
+                {
+                    int answer = oneNumber * twoNumber;
+                    oneNumber = answer;
+                }
             }
 
 
@@ -304,6 +317,10 @@ public class StartGameScript : MonoBehaviour
             checkAnswer = int.Parse(_oneNumberText.text) + int.Parse(_twoNumberText.text);
         else if (_operatorText.text == "-")
             checkAnswer = int.Parse(_oneNumberText.text) - int.Parse(_twoNumberText.text);
+        else if (_operatorText.text == "x")
+            checkAnswer = int.Parse(_oneNumberText.text) * int.Parse(_twoNumberText.text);
+        else if (_operatorText.text == "/")
+            checkAnswer = int.Parse(_oneNumberText.text) / int.Parse(_twoNumberText.text);
 
         return checkAnswer;
     }

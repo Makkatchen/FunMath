@@ -112,7 +112,8 @@ public class WinnerScript : MonoBehaviour
 
         if ((addScore + _scoreUser >= _needScoreForLevel))
         {
-            PlayerPrefs.SetInt("Level", ++_levelUser);
+            int lvl = _levelUser + 1;
+            PlayerPrefs.SetInt("Level", lvl);
             int score = (addScore + _scoreUser) - _needScoreForLevel;
             PlayerPrefs.SetInt("Score", score);
         }

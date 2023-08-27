@@ -1,8 +1,9 @@
 using UnityEngine;
-using GoogleMobileAds.Api;
+//using GoogleMobileAds.Api;
 
 public class AdMobInitMobileAds : MonoBehaviour
 {
+    /*
     [SerializeField] private AdMobBannerScript _bannerScript;
     [SerializeField] private AdMobInterstitialScript _interstitialScript;
     [SerializeField] private AdMobRewardScript _rewardedScript;
@@ -11,9 +12,9 @@ public class AdMobInitMobileAds : MonoBehaviour
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(initStatus =>
         {
-            //_bannerScript.CreateBannerView();
-            //_interstitialScript.LoadInterstitialAd();
-            //_rewardedScript.LoadRewardedAd();
+            _bannerScript.CreateBannerView();
+            _interstitialScript.LoadInterstitialAd();
+            _rewardedScript.LoadRewardedAd();
         }
         );
     }
@@ -27,5 +28,6 @@ public class AdMobInitMobileAds : MonoBehaviour
     {
         _rewardedScript.ShowAdRewarded();
     }
+    */
 
 }
